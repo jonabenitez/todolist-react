@@ -1,0 +1,7 @@
+/////////////CREAR ARCHIVO VITE/////////////////////////
+1) primero crear la carpeta en el cmd con vite.js
+a) en la consola npm create vite nombre del proyecto
+b) abrirlo con vs
+////////////////////////////////////////////////////////
+
+subir a github
