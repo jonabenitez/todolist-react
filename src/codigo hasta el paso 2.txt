@@ -1,0 +1,79 @@
+import {useState} from 'react'
+
+function TaskForm() {
+    
+    const [title, setTitle] = useState("") // esto es igual a crear let title = ""
+    // ahora vamos a cambiar el console.log (e.target.value) por setTitle (e.target.value) asi de esta forma se asigna ese valor al estado
+    
+    let handdleSubmit = (e)=>{
+        e.preventDefault()
+        //cancelamos el evento por defecto del form y evitamos que reinicie el navegador    
+        console.log (title)
+    }
+    // se creo por fuera la funcion de onSubmit para mas prolijidad.
+    return (
+        
+            <form onSubmit={handdleSubmit}> 
+            <input placeholder="Ingresa tu tarea"
+                onChange={(e)=>{
+                    setTitle(e.target.value)
+                }}
+                />
+
+            
+            <button>Agregar</button>
+            </form>
+        
+    ) 
+}
+
+export default  TaskForm
+........................................................
+import { tasks as data} from "./tasks" // se pone con llaves porque no estoy usando export default
+//8 el as data, es como renombrar este elemento tasks, porque? porque js lo confunde en el primer console.log() teniamos tasks, y me tiraba el en pantalla que estaba vacio el array, eso era porque se confundia con el tasks del estado, que era un arreglo vacio, lo llena con el mismo arreglo vacio y lo que queremos es que lo llene con estos datos traidos de ./tasks, para eso le agregamos un "apodo", llamado data, para evitar esta confucion
+import { useState, useEffect } from "react";
+
+console.log(data)
+//para poder mostrar esos datos, tengo que guardarlos en un estado, importando useState
+// una vez que lo guardamos en esta variable de estado hay que recorrerlo con la funcion map
+
+
+function TaskList() {
+  const [tasks, settasks] = useState([])
+  //1 aca estamos creando una variable tasks con un arreglo vacio dentro, SIEMPRE ponerle algo, un arreglo vacio === tasks = [], sino da error.
+  //2 la idea es que con la funcion map este estado se vaya rellenando.
+
+useEffect (()=>{
+  settasks(data)
+},[])
+//7 uso el useEffect: donde, con ese arreglo vacio del final, le estamos indicando que esto se va a a ejecutar cuando cargue el componente tasksList, cuando cargue, vas a setear el arreglo con las tareas.
+
+// el problema es que cuando yo ponia settasks(tasks) me lo estaba tomando pero vacio, se confundia con el tasks del estado  [tasks, settasks], en lugar de agarrar el tasks del array, para eso le agregamos un alias a ese tasks
+
+  if (tasks.length === 0) {
+    return <h1>no hay tareas aun</h1>
+    //4 este if, es de control, antes que se retorne, comprobamos y vamos a controlar si se lleno de tareas o no, si el arreglo vacio que creamos arriba esta en 0, es decir vacio, retoname el h1.
+
+    //5 esta tareas igual no me van a cargar si yo le pongo el nombre  const [tasks, settasks] = useState([tasks]), porque me tira el error, porque en el momento el momento de la inicializacion del componente, esas tareas no estan disponibles todavia, no llego a cargarlas.
+
+    //6 tengo que pedirle que las cargues una vez que esten disponible, esta es la funcion del UseEffect.
+
+  } 
+
+  return (
+    <div>
+      {
+        //3 recorro con map
+        tasks.map((tasks) => (
+        <div key={tasks.id}>
+          <h1>{tasks.title}</h1>
+          <p>{tasks.description}</p>
+
+        </div>))
+      }
+    </div>
+// aca pasa que no me devuelve nada, para eso vamos al paso 4
+  )
+}
+
+export default TaskList 

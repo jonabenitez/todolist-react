@@ -1,7 +1,143 @@
 /////////////CREAR ARCHIVO VITE/////////////////////////
 1) primero crear la carpeta en el cmd con vite.js
-a) en la consola npm create vite nombre del proyecto
-b) abrirlo con vs
+a) en el cmd: npm create vite "nombre del proyecto"
+b) abrir la carpeta con VisualStudio
+
+2) instalacion del proyecto dentro de visual estudio
+a) en la terminal NPM INSTALL
+b) npm run dev para iniciar
 ////////////////////////////////////////////////////////
 
-subir a github
+/////////// SUBIR A GITHUB/////////////////////////////
+1)logearnos en github
+2) crear el proyecto en la pagina de git y copiar el url que nos da.
+3) abrir la paleta de comendos gitclone: url
+4) comentar ctrl + enter
+5) pushear para que se guarde en el git.
+
+*ATAJOS*
+. rfce = me crea el componente raiz con su export
+. imp = el atajo para importar, me da completo la linea solo queda completar
+.clg = console.log
+
+
+* /// PROYECTO ..// *
+
+ETAPA 1 - CREACION DEL TaskList
+lo que vamos a hacer es traer una TaskList desde un archivo Json.
+1. para eso primero creamos el componente TaskList y lo importamos con imp al index.
+2. creamos el archivo Task.js que va a funcionar como nuestra base de datos, son los datos que vamos a importar y usar en el TaskList
+
+por ahora solo tengo esto, para hacer la lista de tareas necesito datos, vamos a crear datos dentro de la app en un js.
+*SE LLAMAN .JSX CUANDO VAMOS A USARLO EN FORMA DE INTERFAZ.*
+
+ETAPA 2  CREACION DE  TASKFORM - USUARIO CREA UNA TAREA DENTRO DEL TaskList
+1. primero creamos un componente llamado formTask, donde vamos a crear un imput para que el asuario cree su tarea.
+2. lo que estoy buscando es que cuando el usuario escriba algo, eso se guarde por ahora en consola, eso lo hacemos con el evento onChange
+3. una vez que logramos capturar lo que queremos, vamos a guardarlos en un estado UseState y lograr que se guarde en un estado.
+4. una vez logrado guardar los datos en un estado lo que voy a hacer es que cuando se ejecute el formulario, se lea el valor que se ingresa, el title.
+eso lo hacemos con onSubmit y ejecutar una funcion.
+** esto lo  que hace es guardar lo que ingresa en el input en consola, pero el problema que tenemos es que los formularios no son async, sino que reinician el navegador, para esto usamos el prevent 
+
+** arbol de componentes**
+por ahora nuestra pagina esta formada por un componente que contiene 2 mas dentro del mismo,
+
+app{
+    --> TaskForm
+    --> TaskList -----> {(Arreglo de tareas Task [] solo disponible para tasksList)}
+}
+
+ni app, TaskForm tienen acceso al arreglo dentro de TaskList.
+
+para que ambos tengan acceso tengo que cambiar de lugar, subir un nivel al arreglo, que este dentro del nivel mas alto que es app:
+
+app{
+    --> ArreglodeTareas [tasks]
+                              |--> TaskForm
+                              |--> TaskList
+}
+
+y de esta forma poder pasar el array tanto a TaskForm como a TaskList para poder acceder al arreglo.
+
+vamos a cortar y pegar el estado donde se creo el array Tasks y su UseEffect donde se asigno el valor de este array, llevamos el Import del Tasks as Data, y del UseEffect tambien para que funcione.
+
+AHORA YA SI!
+ya tenemos este array en el app, ahora tengo que pasarlos al TaskListy al TaskForm, esto en los Componentes lo hago por medio de "los Props".
+
+1) DENTRO DE APP, LE INDICO QUE COMPONENTES VANA  RECIBIR DE APP.
+
+  return (
+  <>
+    <TaskForm/>
+    <TaskList **tasks={tasks}**/>
+  </>
+
+2) voy al componente que quiero que reciba los props, en los parametros agregro: function TaskList (props ) {
+ //y le digo que desde props va a recibir Tasks
+ props.Tasks.map {(Tasks)}
+}
+
+MEJOR FORMA: USAR FORMA ESTRUCTURADA.
+
+function ({tasks}) = esto sabe que se estan buscando los props y especificamos cual. ya directamente lo va a reconcer    
+
+TODO ESTO ES PARA QUE ESTE EL ARREGLO DENTRO DE APP Y PODER PASARLOS A LOS DEMAS COMPONENTES.
+
+FALTA 1 PASO: 
+React funciona por medio de funciones, es necesario crear una funcion 
+
+a) creamos createTask{} dentro de app
+este lo unico que va a hacer es recibir nuevas tareas, task, que es un objeto, y este objeto lo va anadir dentro del arreglo junto con las demas tareas.
+
+va a copiar todos los datos que ya tiene tasks, le va a agregar esta nueva tarea y va a crear un nuevo array.
+  
+//**imporante: como se crea un nuevo arreglo, es necesario que se asigne este nuevo al estado, hacemos un setTasks[...tasks, task] */
+
+para eso hay que asignarle al estado este nuevo array
+
+function createTask (task) {
+ setTasks ([...tasks, task ])
+
+
+b) DENTRO DE LOS COMPONENTES DE APP - TASKFORM
+le vamos a asignar esta nueva funcion al componente
+
+c) dentro de TaskForm le pasamos en los parametros esta funcion 
+function TaskForm(createTask) {}
+
+d) cambio el console.log() por una nueva variable llamada newTask.
+esta va a tener lo que el usuario ingrese, un title en este caso. pero en formato de objeto para poder anadirlo al tasks.
+
+e) ANADIR LA TAREA A LA LISTA.
+en lugar de consologuear este objeto newTask, se lo damos como valor al createTask
+
+createTask (newTask)
+
+esto viaja al componente app, entra al createTask {settasks[...tasks, task]}
+
+crea el nuevo array, el cual se encuentra conectado por medio de los props, y este nuevo array guarda los taks que teniamos, con la nueva tarea que acabamos de agregar
+
+**IMPORTANTE** = LA CONSOLA ME TIRA UN ERROR, por que cada elemento debe contener una key unica, y de esta forma, si guardamos en el TaskForm
+
+        const newTask = {
+            title,
+            id:4, 
+            descripcion:'nueva tarea'
+
+        }
+        siempre va a tener el ID 4.
+
+COMO SOLUCIONARLO??
+
+VAMOS A PONER EL LARGO DEL ARRAY COMO ID, UN .LENGH
+PERO PARA ESO DEBEMOS TENER ACCESO AL ARRAY, Y NO TENEMOS ACCESO PORQUE EL ARRAY ESTA EN APP, LO UNICO QUE HACEMOS ES CREAR UNA COPIA.
+
+ENTONCES PARA ESO, MOVEMOS EL LUGAR DONDE SE CREA LA TAREA, EN EL TaskForm VAMOS A MANTENER CREANDO EL TITULO, ESE SIEMPRE VA A SER DISTINTO Y NO VA A HABER PROBLEMA Y VA A QUEDAR
+
+newTask (title)
+esto va a viajar a tasks de app y va a crear el TITULO
+
+FALTA CREAR EL ID Y LA DESCRIPCION, QUE LA VAMOS A CREAR EN APP
+
+
+////// SEPARAR COMPONENTES ///////
