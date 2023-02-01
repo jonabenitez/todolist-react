@@ -1,5 +1,6 @@
-
-  function TaskList({tasks}) {
+import  TaskCard from "./TaskCard"; 
+ 
+ function TaskList({tasks}) {
     
     if (tasks.length === 0) {
       return <h1>no hay tareas aun</h1> } 
@@ -8,7 +9,6 @@
       //5 esta tareas igual no me van a cargar si yo le pongo el nombre  const [tasks, settasks] = useState([tasks]), porque me tira el error, porque en el momento el momento de la inicializacion del componente, esas tareas no estan disponibles todavia, no llego a cargarlas.
 
       //6 tengo que pedirle que las cargues una vez que esten disponible, esta es la funcion del UseEffect.
-
     
 
     return (
@@ -16,12 +16,12 @@
         {
           //3 recorro con map
           tasks.map((task) => (
-          <div key={task.id}>
-            <h1>{task.title}</h1>
-            <p>{task.description}</p>
-
-          </div>))
-        }
+           <TaskCard
+            key={task.id}
+            task={task}
+           />
+          //ahora nos va a retornar el componente taskcard, con una tarea la cual se la estamos pasando por medio de una prop, esa tarea que   se este recorriendo en ese momento, es lo que nos va a retornar
+        ))}
       </div>
   // aca pasa que no me devuelve nada, para eso vamos al paso 4
     )

@@ -23,21 +23,15 @@ function App() {
     settasks ([...tasks, {
       title:taskTitle,
       id:tasks.length,
-      description: "tarea numero " + (tasks.length+1)
+      description: "tarea numero " 
     }])
-    // aqui no puedo contatenar el task, con el taskTitle, porque uno es un objeto y el otro un string directamente, asi que lo defino como objeto aqui mismo.
+    // aqui no puedo contatenar el task, con el taskTitle, porque uno es un objeto y el otro un string directamente, asi que lo defino como objeto aqui misdmo.
       
     
     // le pedimos que copie todos los elementos del arreglo tasks y le agrege la nueva task.
   // los ... significa copia los elementos de ese arreglo y despues de la , agregalo. y crea un nuevo arreglo.
   //**imporante: como se crea un nuevo arreglo, es necesario que se asigne este nuevo al estado, hacemos un setTasks[...tasks, task] */
 }
-
-
-
-
-
-
 
 
 

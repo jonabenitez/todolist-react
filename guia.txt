@@ -140,4 +140,37 @@ esto va a viajar a tasks de app y va a crear el TITULO
 FALTA CREAR EL ID Y LA DESCRIPCION, QUE LA VAMOS A CREAR EN APP
 
 
-////// SEPARAR COMPONENTES ///////
+////// SEPARAR COMPONENTES EN SUBCOMPONENTES///////
+
+esto se utiliza para organizar mejor el codigo, separando las porciones de interfaz como pasa en el tasklist.
+separamos la porcion de interfaz y creamos un nuevo componente que se va a llamar taskCard. donde al crealo lo que me permite es que este pueda ser reutilizado.
+
+
+   <div>
+    <h1>{task.title}</h1>
+    <p>{task.description}</p>
+  </div>  )
+
+  esto ahora el es el taskCard, lo que nos va a devolver un titulo hy una descripcion.
+ 
+ Y EN EL TASKLIST:
+
+ function TaskList({tasks}) {
+    
+    if (tasks.length === 0) {
+      return <h1>no hay tareas aun</h1> }     
+      
+    return (
+      <div>
+        {
+          //3 recorro con map
+          tasks.map((task) => (
+            <taskCard/>
+        ))
+        }
+      </div>
+    )
+  }
+
+ahora como vemos,  el map va a recorrer la lista de tareas y va a retornar cada tarea que se este recorriendo en ese momneto dentro de un componentente, el componente taskcard.
+para esto tengo que pasarle la tarea como un prop
