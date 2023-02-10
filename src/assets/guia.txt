@@ -32,7 +32,7 @@ por ahora solo tengo esto, para hacer la lista de tareas necesito datos, vamos a
 *SE LLAMAN .JSX CUANDO VAMOS A USARLO EN FORMA DE INTERFAZ.*
 
 ETAPA 2  CREACION DE  TASKFORM - USUARIO CREA UNA TAREA DENTRO DEL TaskList
-1. primero creamos un componente llamado formTask, donde vamos a crear un imput para que el asuario cree su tarea.
+1. primero creamos un componente llamado TaskForm, donde vamos a crear un imput para que el asuario cree su tarea.
 2. lo que estoy buscando es que cuando el usuario escriba algo, eso se guarde por ahora en consola, eso lo hacemos con el evento onChange
 3. una vez que logramos capturar lo que queremos, vamos a guardarlos en un estado UseState y lograr que se guarde en un estado.
 4. una vez logrado guardar los datos en un estado lo que voy a hacer es que cuando se ejecute el formulario, se lea el valor que se ingresa, el title.
@@ -145,32 +145,104 @@ FALTA CREAR EL ID Y LA DESCRIPCION, QUE LA VAMOS A CREAR EN APP
 esto se utiliza para organizar mejor el codigo, separando las porciones de interfaz como pasa en el tasklist.
 separamos la porcion de interfaz y creamos un nuevo componente que se va a llamar taskCard. donde al crealo lo que me permite es que este pueda ser reutilizado.
 
-
+//TASKCARD///
    <div>
     <h1>{task.title}</h1>
     <p>{task.description}</p>
-  </div>  )
+  </div> )
 
-  esto ahora el es el taskCard, lo que nos va a devolver un titulo hy una descripcion.
+cortando esta parte de interfaz, lo que nos permite es utilizarlo y reutilizarlo, este componente lo vamos a usar en TaskList, importandolo.
  
  Y EN EL TASKLIST:
-
+ 
  function TaskList({tasks}) {
-    
     if (tasks.length === 0) {
-      return <h1>no hay tareas aun</h1> }     
-      
+      return <h1>no hay tareas aun</h1>} 
+    
     return (
       <div>
         {
-          //3 recorro con map
           tasks.map((task) => (
-            <taskCard/>
-        ))
-        }
-      </div>
-    )
-  }
+*******************************************
+           <TaskCard
+            key={task.id}
+            task={task}
+*******************************************
 
-ahora como vemos,  el map va a recorrer la lista de tareas y va a retornar cada tarea que se este recorriendo en ese momneto dentro de un componentente, el componente taskcard.
-para esto tengo que pasarle la tarea como un prop
+            />
+        ))}
+      </div>)}
+
+ESTE TASKCARD: SI VAMOS AL COMPONENTE, VEMOS QUE ESTA CONFORMADO POR UNA TAREA Y UNA DESCRIPCION, LAS NECESITA.
+YO SE QUE LAS TAREAS TIENEN UN TITULO Y UNA DESCRIPCION, ENTONCES SE LAS VOY A PASAR POR MEDIO DE ESTAS TAREAS:
+
+Como se las paso? POR MEDIO DE LAS PROPS EN TASKCARD.
+en el TaskCard, le pasamos como propiedades las tareas, donde va a recibir el titulo de la tarea y la descripcion.
+
+en resumen:
+en TaskList:
+por cada vez que se recorra el arreglo de tarea,va a generar un componente TaskCard y le va a asignar una tarea y un Id de esta tarea, la que se esta recorriendo en ese momento y esta va a ser tomada por el TaskCard por medio de las propiedades y va a tomar lo que le importa a taskCard, el titulo y la descripcion
+
+MODIFICAR LA DESCRIPCION - QUE NO SIEMPRE SEA LA MISMA
+ Dentro de TaskForm:
+1)se hace aqui dentro porque es donde se crean las tareas tambien,
+primero creo la interfaz(textArea) que va a contener el dato que queremos capturar.
+2) este dato, como todo dato que cambia, lo guardamos en un useEffect llamado descripcion.
+3) una vez que tenemos el dato guardado en un estado, necesitamos que este sea captado por el encargo de recogerlos datos y llevarlo a data, el createTask. para esto hay que mejorarlo, ya que por el momento espera solo un string.
+
+4) MEJORANDO createTask:
+ahora vamos a decirle que no solo va a esperar un string, sino una tarea completa, un objeto.
+
+EN APP:
+DESDE ESTO....
+  function  createTask (taskTitle) {
+    settasks ([...tasks, {
+      title:taskTitle,
+      id:tasks.length,
+      description: "tarea nueva" 
+    }])
+
+PASA A ESTO....
+  function  createTask (task) {
+    settasks ([...tasks, {
+      title:task.title,
+      id:tasks.length,
+      description: task.description
+    }])
+____________________________________________
+  Y EN TASKFORM
+  DESDE ESTO....
+  
+function TaskForm({ createTask }) {
+
+    let handdleSubmit = (e) => {
+        e.preventDefault()
+      
+        createTask(newTask)
+         }
+
+PASA A ESTO...
+     let handdleSubmit = (e) => {
+        e.preventDefault()
+        createTask(
+          {
+        title,
+        descripcion,}
+        )
+        }
+
+.. PARA QUE EL FORMULARIO SE LIMPIE CUANDO ANADIMOS LAS TAREAS
+dentro del TaskForm
+una vez que en el input este completo por el usuario, CUANDO HAGA CLICK EN SUBMIT (BOTON), ESTO ES MUY SENSILLO,
+SOLAMENTE TENGO QUE VOLVER EL ESTADO A UN STRING vacio.
+
+    setTitle("")
+    setDescription("")
+
+esto dejandolo asi solamente limpia el estado pero no se refleja en el input, para eso es necesario que:
+EL VALOR DEL ESTADO SEA IGUAL AL INPUT QUE ESTAMOS TRABANDO.
+
+VALUE={title}
+VALUE={descripcion}
+
+y ahora se va a reflejar de forma actual el valor del estado en el input
