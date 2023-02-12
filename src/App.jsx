@@ -24,6 +24,7 @@ function App() {
 //9) movemos este elemento creado en TaskList junto con la importacion de data a al componente App
 
   function  createTask (task) {
+
     settasks ([...tasks, {
       title:task.title,
       id:tasks.length,// de este es tanks, porque agarra el id de la lista de tareas, del array, en los demas agarra la tarea en cuestion.
@@ -36,12 +37,22 @@ function App() {
   //**imporante: como se crea un nuevo arreglo, es necesario que se asigne este nuevo al estado, hacemos un setTasks[...tasks, task] */
 }
 
+function deleteTask(taskID) {
+  settasks(tasks.filter(task => task.id !== taskID))
+// por cada tarea (task) que recorras, voy a comparar si el id de esa tarea (que viene del array tasks) es distinta al taskID que recibe como parametro en el taskCard cuando se hace click en el boton, si encuentra uno que sea igual, va a ser false y se quita.
+
+
+
+
+  console.log(taskID)
+  
+}
 
 
   return (
   <>
     <TaskForm createTask= {createTask} />
-    <TaskList tasks={tasks}/>
+    <TaskList tasks={tasks} deleteTask={deleteTask}/>
   </>
     )
   

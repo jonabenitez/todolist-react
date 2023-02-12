@@ -1,6 +1,6 @@
 import  TaskCard from "./TaskCard"
  
- function TaskList({tasks}) {
+ function TaskList({tasks, deleteTask}) {
     
     if (tasks.length === 0) {
       return <h1>no hay tareas aun</h1> } 
@@ -15,6 +15,7 @@ import  TaskCard from "./TaskCard"
            <TaskCard 
             task={task}
             key={task.id}
+            deleteTask={deleteTask}
            />
           //ahora nos va a retornar el componente taskcard, con una tarea la cual se la estamos pasando por medio de una prop, esa tarea que   se este recorriendo en ese momento, es lo que nos va a retornar
         ))}

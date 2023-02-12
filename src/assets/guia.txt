@@ -246,3 +246,56 @@ VALUE={title}
 VALUE={descripcion}
 
 y ahora se va a reflejar de forma actual el valor del estado en el input
+
+ELIMINAR TAREA
+
+para eliminar una tarea, necesitamos usar el arbol de componentes, similar al createTask.
+
+donde se va a crear la funcion es en el componente padre que es app, para luego ser pasado a tasklist y por ultimo al elemento que lo va a a ejecutar que es el taskCard.
+por medio de las prop vamos a pasar lo que creamos en app.
+
+app --> tasksList --> taskCard
+deletetask->deletetask->deletetask
+
+una vez creada la funcion de eliminar tarea, primero creamos la funcion a modo de prueba con un console.log(taks), para corroborar que me traiga los datos con los que quiero trabajar.
+
+function deleteTask() {
+  console.log(tasks) 
+}
+esto me trae el array con las tareas hasta el momento.
+
+UNA VEZ QUE TENGO LAS TAREAS COMO LAS ELIMINO?  USANDO EL METODO DE ARRAY: FILTER
+
+lo que va a hacer filter, es comparar el valor que le estoy pasando con los valores que tengo en el array, cada elemento del array tiene un ID unico, esto es con lo que voy a trabajar.
+voy a comparar si el ID que entra en la funcion eventCLick  como parametro es distinto a los que tengo en el array de tareas, si este es distinto lo deja, si encuentra uno que es igual, lo va a eliminar.
+
+function deleteTask(taskID) {
+  console.log(taskID)
+}
+**IMPORANTE**
+la funcion entiende que estoy trabajando con el ID que es el Index, siempre el primer parametro la function es el index, asi lo puedo identificar
+
+Y EN EL TRASKCARD
+
+<button onClick={ ()=> deleteTask(task.id)}>
+      Eliminar tarea
+    </button>
+  </> 
+
+esta primer funcion ()=>  es una funcion anonima, sirve, para que no se ejecute directamente el deleteTask, se pone como paso previo, asi se ejecuta "vacia" y cuando se hace un click se pasa al deleteTask y se ejecuta
+
+AHORA QUE YA CAPTURE EL DATO QUE QUIERO ELIMINAR, EL ID. CREO EL FILTRO PARA QUITARLO EN APP
+
+function deleteTask(taskID) {
+tasks.filter(task => task.id !== taskID)
+
+ESTE FILTRO COMPARA EL INDEX O ID QUE ENTRA EN LA FUNCTION deleteTask EN TASKCARD AL HACERLE CLICK AL ELEMENTO Y SUPONIENDO QUE ENTRE 1, VA A RECORRER EL ARRAY DONDE ESTAN TODAS LAS TAREAS Y COMPARARA 1X1 EL ID DE CARA TAREA, HASTA ENCONTRAR EL QUE ES IGUAL, EL QUE ES IGUAL A 1 LO ELIMINA.
+
+ULTIMO PASO!
+ESTO LO QUE HACE ES CREAR UN NUEVO ARRAY SIN ESTE ELEMENTO 1 = [0,2,3,4]
+PARA QUE SE REFLEJE SOLAMENTE FALTA,QUE TODO ESTO, ENTRE SETEANDO EL ESTADO DONDE SE ENCUENTRA.
+
+
+function deleteTask(taskID) {
+
+setTasks(tasks.filter(task => task.id !== taskID))
