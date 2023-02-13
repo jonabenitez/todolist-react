@@ -299,3 +299,70 @@ PARA QUE SE REFLEJE SOLAMENTE FALTA,QUE TODO ESTO, ENTRE SETEANDO EL ESTADO DOND
 function deleteTask(taskID) {
 
 setTasks(tasks.filter(task => task.id !== taskID))
+
+
+-------------- LA VEDERA INTERFAZ = CREANDO  EL CONTEXTO DE LA APP ------------------------
+
+hasta ahora funciona la aplicacion, pero se nos complica mantenerla asi por la forma que tenemos de interactuar con el arbol,
+donde el ultimo componente es el taskCard pero el para acceder a algun dato. lo hacen por medio del createTask o el deleteTask
+
+app        -->   tasksList  -->    taskCard
+createTask -->   createTask -->   createTask
+deleteTask -->   deleteTask -->   deleteTask
+
+este es el viaje que hace la info, tiene que pasar por todas las interfacez y eso no es practico si hay 100 componentes hay que pasarlo 100 veces y modificando una se va a ir modificando las de abajo y por ahi no queremos crear eso.
+
+esto se debe a que APP es el dueno del estado donde estan tomando los datos del array con las tareas, las tacks.
+
+
+
+// ESTADO //
+el estado es un estado que se va actualizando, es lo que creamos en app, es todo desde el estado en si, hasta el create y deletetask.
+ 
+  const [tasks, settasks] = useState([]) --> esta es el estado en si
+  useEffect (()=>{settasks(data)},[])
+
+  function  createTask (task)
+    settasks ([...tasks, {
+      title:task.title,
+      id:tasks.length,
+      description:task.description,}])}
+
+function deleteTask(taskID) {
+  settasks(tasks.filter(task => task.id !== taskID))}
+
+
+
+/// EL CONTEXTO ///
+es lo que vendria a solucionar esto, un contexto que nos permita acceder directamente a los valores sin que actuen los demas como intermediarios.
+que los componentes se lo pidan a su componente mayor y no alrevez.
+
+
+CONTEXTO   <-- app    <--   tasksList  <--    taskCard
+ ESTADO
+
+ahora contexto va almacenar el estado, cual es la diferencia?
+
+React penso en eso y creo el API CONTEXT y nos trae una nueva forma de traer datos, permitiendonos acceder directamente al contexto.
+ como todos estan dentro de este contexto, ahora todos pueden acceder a los datos y compartilo con todos los componentes.
+
+
+// PASOS para hacerlo.
+
+1) creamos una carpeta context
+2) dentro vamos a crear una variable que contenga la creacion del taskcontext: taskcontext = createContext () = TaskContext ES EL NOMBRE DEL CONTEXTO
+
+3)  y  creamos la funcion que es la que va a crear este contexto, TaskContextProvider.
+
+TaskContextProvider:
+   function TaskContextProvider(props) {
+    return (
+        <TaskContext.Provider> 
+              {props.children}
+        </TaskContext.Provider> )}
+
+  la funcion de este contexto es poner a todos al mismo nivel y puedan intecambiar todos sus datos, en el contexto va a estar guardando todo y cada componete va  a poder pedirlo directamente.
+{props.children} ES LO QUE INDICA QUE TODO LO Q VA A ESTAR DENTRO, VAN A SER SU HIJOS.
+
+
+
