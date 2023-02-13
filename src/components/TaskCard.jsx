@@ -1,6 +1,6 @@
-import React from 'react'
+import {React} from 'react'
 
-function TaskCard({task, deleteTask}) {
+function TaskCard({task}) {
   return (
     <>
     <h1>{task.title}</h1>

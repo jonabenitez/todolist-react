@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
+import { tasks as data } from "../data/tasks"
 
 export const TaskContext = createContext() // este es el nombre del contexto
 
@@ -6,14 +7,15 @@ export const TaskContext = createContext() // este es el nombre del contexto
 
 export function TaskContextProvider(props) {
 
+    //////////// TASKS
     const [tasks, settasks] = useState([])
-
     useEffect(() => {
         settasks(data)
     }, [])
 
-    function createTask(task) {
 
+    ////////////// CREATE TASK
+    function createTask(task) {
         settasks([...tasks, {
             title: task.title,
             id: tasks.length,
@@ -21,6 +23,9 @@ export function TaskContextProvider(props) {
         }])
     }
 
+
+
+    ////////////// DELETE TASK
     function deleteTask(taskID) {
         settasks(tasks.filter(task => task.id !== taskID))
         console.log(taskID)
@@ -30,13 +35,14 @@ export function TaskContextProvider(props) {
 
     return (
         // este es el componente que va a englobar a todos
-        <TaskContext.Provider 
-        value={{
-            tasks,
-        createTask,
-        deleteTask}}>
+        <TaskContext.Provider
+            value={{
+                tasks,
+                createTask,
+                deleteTask
+            }}>
             {props.children}
-            
+
         </TaskContext.Provider>
     )
 }

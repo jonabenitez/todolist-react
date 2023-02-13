@@ -364,5 +364,46 @@ TaskContextProvider:
   la funcion de este contexto es poner a todos al mismo nivel y puedan intecambiar todos sus datos, en el contexto va a estar guardando todo y cada componete va  a poder pedirlo directamente.
 {props.children} ES LO QUE INDICA QUE TODO LO Q VA A ESTAR DENTRO, VAN A SER SU HIJOS.
 
+ahora dentro del taskcontext, vamos a agregar lo que estaba en app y para que los demas componentes tengan acceso a los datos que van a estar en taskcontext, se lo tengo que agregar como valor o propiedad a este TaskContextProvider 
+
+ <TaskContext.Provider
+            value={{
+                tasks,
+                createTask,
+                deleteTask
+            }}>
+
+muevo los import de app a taskcontext para que tanto los tasks cmo createTask y deleteTask funcionen
+y en app, borro esto que se los estaba pasando como propiedades
+
+    <TaskForm createTask= {createTask} />
+    <TaskList tasks={tasks} deleteTask={deleteTask}/>
+  </>
+
+  quedando asi
+      <TaskForm/>
+    <TaskList/>
+  </>
+
+  y dentro de estas carpetas voy a agregar el contexto y el use context para agregarselos ahora dentro del componente y de esta nueva forma
 
 
+DENTRO DE CADA COMPONENTE
+1) BORRO LA PROP QUE LE HABIAMOS PASADO Y YA NO NOS sirve
+2) 
+A) IMPORTO DESDE REACT EL USECONTEXT, es el que me permite usar el contexto.
+B) IMPORTO DESDE LA CARPETA context/TaskContext EL NOMBRE DEL CONTEXTO QUE VOY A USAR, taskcontext.
+3) CREO UNA VARIABLE DONDE VOY A TRAER DESDE EL VALOR DE ESTE TASK CONTEXT.
+
+const value = useContext (taskcontext)
+traduccion:
+voy a usar el contexto taskcontext
+
+CON ESTO ME TRAIGO TODO EL ARREGLO TASKS, CREATETASK, DELETETASK.
+
+AHORA SELECCIONO QUE NECESITO TRAER
+const {CREATETASK} = useContext (taskcontext)
+
+y ahora me estoy trayendo el createTask.
+
+ 

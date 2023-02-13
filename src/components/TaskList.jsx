@@ -1,7 +1,12 @@
 import  TaskCard from "./TaskCard"
- 
- function TaskList({tasks, deleteTask}) {
+import {useContext} from 'react'
+import { TaskContext } from "../context/TaskContext";
+
+//{tasks, deleteTask}
+ function TaskList() {
     
+const {tasks} = useContext(TaskContext)
+
     if (tasks.length === 0) {
       return <h1>no hay tareas aun</h1> } 
       //4 este if, es de control, antes que se retorne, comprobamos y vamos a controlar si se lleno de tareas o no, si el arreglo vacio que creamos arriba esta en 0, es decir vacio, retoname el h1.
@@ -15,7 +20,7 @@ import  TaskCard from "./TaskCard"
            <TaskCard 
             task={task}
             key={task.id}
-            deleteTask={deleteTask}
+            
            />
           //ahora nos va a retornar el componente taskcard, con una tarea la cual se la estamos pasando por medio de una prop, esa tarea que   se este recorriendo en ese momento, es lo que nos va a retornar
         ))}
