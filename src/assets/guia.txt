@@ -406,7 +406,7 @@ const {CREATETASK} = useContext (taskcontext)
 
 y ahora me estoy trayendo el createTask.
 
-CREAR ESTILO A NUESTRA APP TAILWILD CSS
+CREAR ESTILO A NUESTRA APP WILD CSS
 
 primero instalamos el componentente desde su pag.
 
@@ -425,7 +425,7 @@ le estamos poniendo un grid con 4 columnas
 en APP: ya que el contiene a todo, vamos a agregarle al fragment un main, donde le vamos a dar un color a toda la pantalla con className='bg-zinc-900 h-screen.
 
 y para centrar creamos un div llamado container y le pasamos la sig propiedad:
-  <div className='container mx-auto'>
+  <div className='container   '>
  esto significa que se va a centrar respecto a los lados de manera automatica y le agrego un padding para que no este pegado hacia arriba
 
  PARA CENTRAR EL FORMULARIO.

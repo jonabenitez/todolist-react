@@ -27,7 +27,7 @@ function TaskForm() {
     }
     return (
         <div className='max-w-md mx-auto'>
-            <form onSubmit={handdleSubmit} className="bg-slate-600 p-8 mb-6">
+            <form onSubmit={handdleSubmit} className="bg-slate-600 p-8 mb-6 rounded-md">
                 <h1 className='text-yellow-100 text-2xl mb-2 text-center font-bold'>Crea tu Tarea</h1>
                 <input className='bg-slate-200 p-4 w-full mb-2'
                     placeholder="Ingresa tu tarea"
